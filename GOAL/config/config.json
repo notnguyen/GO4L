@@ -1,0 +1,5 @@
+{
+    "key": "9be9843eb46e4df7b8bb5b8ca44adb00",
+    "base_url": "https://api.football-data.org/v4/",
+    "model": "log_reg_model.pkl"
+}
