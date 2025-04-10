@@ -1,0 +1,38 @@
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
+
+# Seznam vstupních proměnných (features)
+features = [
+    'home_possession_form', 'away_possession_form', 'home_shots_form', 'away_shots_form',
+    'home_shots_on_goal_form', 'away_shots_on_goal_form', 'home_shots_off_goal_form', 'away_shots_off_goal_form',
+    'home_fouls_form', 'away_fouls_form', 'home_yellow_cards_form', 'away_yellow_cards_form',
+    'home_red_cards_form', 'away_red_cards_form', 'home_saves_form', 'away_saves_form',
+    'home_goal_kicks_form', 'away_goal_kicks_form', 'home_throw_ins_form', 'away_throw_ins_form',
+    'home_offsides_form', 'away_offsides_form', 'home_free_kicks_form', 'away_free_kicks_form'
+] + home_dummies.columns.tolist() + away_dummies.columns.tolist()
+
+# Vstupy a cílová proměnná
+X = matches_2023[features]
+y = matches_2023['home_result']
+
+# Rozdělení na trénovací a testovací sadu
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Škálování dat
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Definice a trénování neuronové sítě
+nn_model = MLPClassifier(hidden_layer_sizes=(100, 50), max_iter=1000, random_state=42)
+nn_model.fit(X_train_scaled, y_train)
+
+# Predikce a vyhodnocení
+y_pred = nn_model.predict(X_test_scaled)
+accuracy = accuracy_score(y_test, y_pred)
+
+print(f"Accuracy: {accuracy:.4f}")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
